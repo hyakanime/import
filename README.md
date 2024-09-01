@@ -18,7 +18,7 @@ _Vous serez cité dans les contributeurs de ce répertoire qui sera partagé sur
 
 ## Mise en route
 
-L'utilisation des fonctions nécessite une connexion à la base de données Hyakanime que nous fournissons pas. Un jeu de données est disponible [ici](https://google.fr)
+L'utilisation des fonctions nécessite une connexion à la base de données Hyakanime que nous fournissons pas. Un jeu de données est disponible dans le dossier `data`
 
 
 

@@ -1,4 +1,5 @@
 const Hyak_Anime = require("../model/Hyak_Anime");
+// const Hyak_Anime = require('./data/Hyak_Anime.json')
 
 // Hyakanime status formater
 let status_formater = {
@@ -71,8 +72,14 @@ module.exports = async function importAnilist(username, uid) {
         }
     })
 
-    // Find Hyakanime Anime from Anilist ID
+    // Find Hyakanime Anime from Anilist ID (if you use Mongoose)
     let anime_find = await Hyak_Anime.find({ idAnilist: formated_anilist_progression.map(i => { return i.id }) });
+
+    // If you use json file :
+    // let anime_find = formated_anilist_progression.map(i => {
+    //     return Hyak_Anime.find(anime => anime.idAnilist === i.id);
+    // });
+
 
     // Create Hyakanime progression and keep title not found
     let finalProgression = [];
