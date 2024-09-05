@@ -11,6 +11,18 @@ let status_formater = {
     "DROPPED": 5,
 }
 
+// Transform format date Anilist to Hyakanime
+function formatedDate(date) {
+    let final_date = ""
+    if (date.year) {
+        final_date = `${date.year}-01-01T00:00:00.000Z`
+        if (date.month && date.day)
+            final_date = `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}T00:00:00.000Z`
+    }
+
+    return final_date
+}
+
 module.exports = async function importAnilist(username, uid) {
 
     const query = `
@@ -37,7 +49,7 @@ module.exports = async function importAnilist(username, uid) {
                             month
                             day
                         }
-			completedAt {
+			            completedAt {
                             year
                             month
                             day
@@ -71,24 +83,11 @@ module.exports = async function importAnilist(username, uid) {
     data.data.MediaListCollection.lists.forEach((e) => {
         if (['Watching', 'Completed', 'Paused', 'Dropped', 'Planning', 'Rewatching'].includes(e.name)) {
             e.entries.forEach((item) => {
-                //Modification de la date afin de correspondre a la data hyakanime
 
-                let iso8601StartDate = null;
-                let iso8601EndDate = null;
-                if (item.startedAt && item.startedAt.year) {
-                    iso8601StartDate = `${item.startedAt.year}-01-01T00:00:00.000Z`
-                    if (item.startedAt.month && item.startedAt.day) {
-                        iso8601StartDate = `${item.startedAt.year}-${item.startedAt.month.toString().padStart(2, '0')}-${item.startedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
-                    }
-                }
+                // Change date format
+                let iso8601StartDate = item.startedAt ? formatedDate(item.startedAt) : "";
+                let iso8601EndDate = item.completedAt ? formatedDate(item.startedAt) : "";
 
-                if (item.completedAt && item.completedAt.year) {
-                    iso8601EndDate = `${item.completedAt.year}-01-01T00:00:00.000Z`
-
-                    if (item.completedAt.month && item.completedAt.day) {
-                        iso8601EndDate = `${item.completedAt.year}-${item.completedAt.month.toString().padStart(2, '0')}-${item.completedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
-                    }
-                }
                 formated_anilist_progression.push({
                     id: item.media.id,
                     title: item.media.title.english ? item.media.title.english : item.media.title.romaji ? item.media.title.romaji : item.media.title.natif,
