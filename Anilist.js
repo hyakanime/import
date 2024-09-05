@@ -37,11 +37,11 @@ module.exports = async function importAnilist(username, uid) {
                             month
                             day
                         }
-					    completedAt {
-						    year
-							month
-							day
-						}
+			completedAt {
+                            year
+                            month
+                            day
+                        }
                     }
                 }
             }
