@@ -44,6 +44,7 @@ module.exports = async function importAnilist(username, uid) {
                         status
                         score
                         progress
+                        repeat
                         startedAt {
                             year
                             month
@@ -95,7 +96,8 @@ module.exports = async function importAnilist(username, uid) {
                     progression: item.progress,
                     score: item.score,
                     startDate: iso8601StartDate,
-                    endDate: iso8601EndDate
+                    endDate: iso8601EndDate,
+                    rewatch: item.repeat
                 })
             })
         }
@@ -123,7 +125,8 @@ module.exports = async function importAnilist(username, uid) {
                 score: e.score,
                 uid: uid,
                 startDate: e.startDate,
-                endDate: e.endDate
+                endDate: e.endDate,
+                rewatch: e.rewatch
             })
             added_anime.push(e.title)
         }
