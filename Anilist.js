@@ -63,8 +63,8 @@ module.exports = async function importAnilist(username, uid) {
     const response = await fetch('https://graphql.anilist.co', options);
     const data = await response.json();
 
-    if (!data)
-        throw new Error('Aucun media trouvé.');
+    if (!data || !data.data.MediaListCollection)
+        throw new Error("Aucun media trouvé pour ce nom d'utilisateur.");
 
     // Get all information from Anilist progression
     let formated_anilist_progression = []
@@ -78,16 +78,15 @@ module.exports = async function importAnilist(username, uid) {
                 if (item.startedAt && item.startedAt.year) {
                     iso8601StartDate = `${item.startedAt.year}-01-01T00:00:00.000Z`
                     if (item.startedAt.month && item.startedAt.day) {
-                    iso8601StartDate =`${item.startedAt.year}-${item.startedAt.month.toString().padStart(2, '0')}-${item.startedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
+                        iso8601StartDate = `${item.startedAt.year}-${item.startedAt.month.toString().padStart(2, '0')}-${item.startedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
                     }
                 }
 
-                if(item.completedAt && item.completedAt.year)
-                {
+                if (item.completedAt && item.completedAt.year) {
                     iso8601EndDate = `${item.completedAt.year}-01-01T00:00:00.000Z`
 
-                    if (item.completedAt.month && item.completedAt.day){
-                        iso8601EndDate =`${item.completedAt.year}-${item.completedAt.month.toString().padStart(2, '0')}-${item.completedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
+                    if (item.completedAt.month && item.completedAt.day) {
+                        iso8601EndDate = `${item.completedAt.year}-${item.completedAt.month.toString().padStart(2, '0')}-${item.completedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
                     }
                 }
                 formated_anilist_progression.push({
@@ -96,8 +95,8 @@ module.exports = async function importAnilist(username, uid) {
                     status: item.status,
                     progression: item.progress,
                     score: item.score,
-                    startDate : iso8601StartDate,
-                    endDate : iso8601EndDate
+                    startDate: iso8601StartDate,
+                    endDate: iso8601EndDate
                 })
             })
         }
@@ -124,8 +123,8 @@ module.exports = async function importAnilist(username, uid) {
                 status: status_formater[e.status],
                 score: e.score,
                 uid: uid,
-                startDate : e.startDate,
-                endDate : e.endDate
+                startDate: e.startDate,
+                endDate: e.endDate
             })
             added_anime.push(e.title)
         }
