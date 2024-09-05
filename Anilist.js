@@ -107,9 +107,7 @@ module.exports = async function importAnilist(username, uid) {
     let anime_find = await Hyak_Anime.find({ idAnilist: formated_anilist_progression.map(i => { return i.id }) });
 
     // If you use json file :
-    // let anime_find = formated_anilist_progression.map(i => {
-    //     return Hyak_Anime.find(anime => anime.idAnilist === i.id);
-    // });
+    // const anime_find = Hyak_Anime.filter(anime => formated_anilist_progression.map(i => i.id).includes(anime.idAnilist));
 
 
     // Create Hyakanime progression and keep title not found
