@@ -14,7 +14,7 @@ let status_formater = {
 module.exports = async function importAnilist(username, uid) {
 
     const query = `
-        query ($userName: String) {
+       query ($userName: String) {
             MediaListCollection(userName: $userName, type: ANIME) {
                 lists {
                     name
@@ -32,6 +32,16 @@ module.exports = async function importAnilist(username, uid) {
                         status
                         score
                         progress
+                        startedAt {
+                            year
+                            month
+                            day
+                        }
+			completedAt {
+                            year
+                            month
+                            day
+                        }
                     }
                 }
             }
@@ -61,12 +71,33 @@ module.exports = async function importAnilist(username, uid) {
     data.data.MediaListCollection.lists.forEach((e) => {
         if (['Watching', 'Completed', 'Paused', 'Dropped', 'Planning', 'Rewatching'].includes(e.name)) {
             e.entries.forEach((item) => {
+                //Modification de la date afin de correspondre a la data hyakanime
+
+                let iso8601StartDate = null;
+                let iso8601EndDate = null;
+                if (item.startedAt && item.startedAt.year) {
+                    iso8601StartDate = `${item.startedAt.year}-01-01T00:00:00.000Z`
+                    if (item.startedAt.month && item.startedAt.day) {
+                    iso8601StartDate =`${item.startedAt.year}-${item.startedAt.month.toString().padStart(2, '0')}-${item.startedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
+                    }
+                }
+
+                if(item.completedAt && item.completedAt.year)
+                {
+                    iso8601EndDate = `${item.completedAt.year}-01-01T00:00:00.000Z`
+
+                    if (item.completedAt.month && item.completedAt.day){
+                        iso8601EndDate =`${item.completedAt.year}-${item.completedAt.month.toString().padStart(2, '0')}-${item.completedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
+                    }
+                }
                 formated_anilist_progression.push({
                     id: item.media.id,
                     title: item.media.title.english ? item.media.title.english : item.media.title.romaji ? item.media.title.romaji : item.media.title.natif,
                     status: item.status,
                     progression: item.progress,
-                    score: item.score
+                    score: item.score,
+                    startDate : iso8601StartDate,
+                    endDate : iso8601EndDate
                 })
             })
         }
@@ -92,7 +123,9 @@ module.exports = async function importAnilist(username, uid) {
                 progression: e.progression,
                 status: status_formater[e.status],
                 score: e.score,
-                uid: uid
+                uid: uid,
+                startDate : e.startDate,
+                endDate : e.endDate
             })
             added_anime.push(e.title)
         }
