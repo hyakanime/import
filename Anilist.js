@@ -76,7 +76,7 @@ module.exports = async function importAnilist(username, uid) {
                 let iso8601StartDate = null;
                 let iso8601EndDate = null;
                 if (item.startedAt && item.startedAt.year) {
-                    iso8601StartDate = `${item.startedAt.year}-00-00T00:00:00.000Z`
+                    iso8601StartDate = `${item.startedAt.year}-01-01T00:00:00.000Z`
                     if (item.startedAt.month && item.startedAt.day) {
                     iso8601StartDate =`${item.startedAt.year}-${item.startedAt.month.toString().padStart(2, '0')}-${item.startedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
                     }
@@ -84,7 +84,7 @@ module.exports = async function importAnilist(username, uid) {
 
                 if(item.completedAt && item.completedAt.year)
                 {
-                    iso8601EndDate = `${item.completedAt.year}-00-00T00:00:00.000Z`
+                    iso8601EndDate = `${item.completedAt.year}-01-01T00:00:00.000Z`
 
                     if (item.completedAt.month && item.completedAt.day){
                         iso8601EndDate =`${item.completedAt.year}-${item.completedAt.month.toString().padStart(2, '0')}-${item.completedAt.day.toString().padStart(2, '0')}T00:00:00.000Z`
