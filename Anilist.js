@@ -87,7 +87,7 @@ module.exports = async function importAnilist(username, uid) {
 
                 // Change date format
                 let iso8601StartDate = item.startedAt ? formatedDate(item.startedAt) : "";
-                let iso8601EndDate = item.completedAt ? formatedDate(item.startedAt) : "";
+                let iso8601EndDate = item.completedAt ? formatedDate(item.completedAt) : "";
 
                 formated_anilist_progression.push({
                     id: item.media.id,
