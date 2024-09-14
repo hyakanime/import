@@ -82,8 +82,10 @@ module.exports = async function importAnilist(username, uid) {
     // Get all information from Anilist progression
     let formated_anilist_progression = []
     data.data.MediaListCollection.lists.forEach((e) => {
-        if (['Watching', 'Completed', 'Paused', 'Dropped', 'Planning', 'Rewatching'].includes(e.name)) {
-            e.entries.forEach((item) => {
+        e.entries.forEach((item) => {
+
+            // Check double entries in different list
+            if (!formated_anilist_progression.some((el) => el.id === item.media.id)) {
 
                 // Change date format
                 let iso8601StartDate = item.startedAt ? formatedDate(item.startedAt) : "";
@@ -99,8 +101,8 @@ module.exports = async function importAnilist(username, uid) {
                     endDate: iso8601EndDate,
                     rewatch: item.repeat
                 })
-            })
-        }
+            }
+        })
     })
 
     // Find Hyakanime Anime from Anilist ID (if you use Mongoose)
