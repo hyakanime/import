@@ -44,7 +44,7 @@ module.exports = async function importMAL(file, uid) {
                 animeID: id,
                 progression: e.progression,
                 status: status_formater[e.status],
-                score: e.score,
+                score: e.score === 0 ? null : e.score,
                 uid: uid,
                 startDate: e.startDate,
                 endDate: e.endDate,

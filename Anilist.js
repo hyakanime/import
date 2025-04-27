@@ -1,5 +1,5 @@
 const Hyak_Anime = require("../model/Hyak_Anime");
-// const Hyak_Anime = require('./data/Hyak_Anime.json')
+//const Hyak_Anime = require('./data/Hyak_Anime.json')
 
 // Hyakanime status formater
 let status_formater = {
@@ -124,7 +124,7 @@ module.exports = async function importAnilist(username, uid) {
                 animeID: id,
                 progression: e.progression,
                 status: status_formater[e.status],
-                score: e.score,
+                score: e.score === 0 ? null : e.score,
                 uid: uid,
                 startDate: e.startDate,
                 endDate: e.endDate,
